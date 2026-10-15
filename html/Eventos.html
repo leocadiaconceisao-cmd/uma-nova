@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<h1 id="titulo">clique duas</h1>
+<input type="text" id="nome" onfocus="mostrarNome()">
+<h2>bem vindo</h2>
+<p id="resultado"></p>
+<select id="curso">
+    <option value="">Escolha um curso </option>
+    <option value="informatica">informatica</option>
+    <option value="jornalismo">jornalismo</option>
+    <option value="medicina">medicina</option>
+</select> 
+
+<br><br>
+
+
+
+<input type="checkbox" id="termos">
+<label>aceito os termos</label>
+<button onclick="verificarformulario()">continuar</button>
+<p id="resultado"></p> 
+<hr><hr>
+
+<h2>EXERCICIO</h2>
+<button ondblclick="mostrarTexto()">Clique aqui duas vezes</button>
+ <p id="texto">oii mm</p>
+
+
+
+    <script>
+
+        function mostrarTexto() { 
+           document.getElementById("texto").innerHTML = "Olá! Este texto apareceu após o duplo clique."; 
+        texto.style.color = "blue"; 
+        texto.style.fontSize = "30px"; 
+    }
+// function  validar fomularios(){
+
+// let  nome = document.getElementById("nome").value;
+// let  idade = document.getElementById("idade").value;
+// let  curso = document.getElementById("curso").value;
+// let  termos = document.getElementById("termos").checked;
+// if ( nome== ""){
+
+//     document.getElementById("resultado").innerHTML="digite o seu nome.";
+
+//     else if ( idade == ""){
+//      document.getElementById("resultado").innerHTML = "digite a sua idade"
+
+// }
+
+ 
+// else if ( curso == ""){
+
+//     document.getElementById("resultado").innerHTML = "escolha um curso"
+// }
+
+// if (  escolha um cursocurso== ""){
+//     else if ( termos == false) {
+//        document.getElementById("resultado").innerHTML= "Aceite os termos para continuar" 
+//     }
+// else{
+//     document.getElementById("resultado").innerHTML= "formulario enviado com sucesso ✅"
+// }
+
+
+//  }
+
+
+// }
+
+
+// }
+
+
+
+//         function verificar() {
+//             let termo = document.getElementById("termos").checked;
+//             if (termos ==true) {
+//                 document.getElementById("resultado").innerHTML = "termos aceites";
+
+//             }
+//             else {
+//                 document.getElementById("resultado").innerHTML = "voce precisa aceitar os termos.";
+//             }
+//         }
+//         function mostrarfrutas() {
+//             let frutas = document.getElementById("frutas").value;
+//              document.getElementById("resultado").innerHTML = "Voce escolheu:" + frutas;
+//         }
+//         function mostrarNome() {
+//             document.getElementById("nome").style.border = "yellow 5px solid";
+            
+
+//         }
+// function entrar() {
+//         document.getElementById("resultado").innerHTML = "Entrou";
+//         let caix = document.getElementById("caixa");
+//         caix.style.backgroundColor = "green";
+        
+//     }
+
+//     function sair() {
+//         document.getElementById("resultado").innerHTML = "Saiu";
+//         let caix = document.getElementById("caixa");
+//         caix.style.backgroundColor = "yellow";
+//     }
+    
+
+    </script> 
+    
+</body>
+</html>

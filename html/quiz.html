@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Infinito</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(rgba(10,25,47,0.5), rgba(10,25,47,0.85)), url('Captura de tela 2026-10-13 153321.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+        /* --- ESTILO DA CAPA --- */
+        .capa {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+        .slogan {
+            position: absolute;
+            top: -40px;
+            right: 20px;
+            font-style: italic;
+            color: #93c5fd;
+            text-align: right;
+        }
+        .capa h1 {
+            font-size: 5rem;
+            margin: 0;
+            letter-spacing: 3px;
+        }
+        .capa h2 {
+            font-size: 1.6rem;
+            margin: 10px 0;
+            font-weight: normal;
+        }
+        .capa h2 span {
+            color: #38bdf8;
+            font-weight: bold;
+        }
+        .capa p {
+            color: #cbd5e1;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        .btn-azul {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-azul:hover {
+            background: #2563eb;
+        }
+        /* --- ESTILO DO CARD DO QUIZ --- */
+        .quiz-box {
+            position: relative;
+            background: white;
+            color: #1e293b;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        /* --- BOTÃO FECHAR (X) --- */
+        .btn-fechar {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #64748b;
+            cursor: pointer;
+            line-height: 1;
+            padding: 5px;
+        }
+        .btn-fechar:hover {
+            color: #ef4444;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            padding-right: 25px; /* Espaço para não sobrepor o X */
+        }
+        .option {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            list-style: none;
+        }
+        .option:hover {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+        .correct {
+            background: #d1fae5 !important;
+            color: #065f46 !important;
+            font-weight: bold;
+            border-color: #10b981 !important;
+        }
+        .incorrect {
+            background: #fee2e2 !important;
+            color: #991b1b !important;
+            border-color: #ef4444 !important;
+        }
+        .disabled {
+            pointer-events: none;
+        }
+        .btn-prox {
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TELA INICIAL ALTERADA: APENAS O BOTÃO -->
+    <div id="tela-inicio" class="capa">
+        <button class="btn-azul" onclick="iniciar()">Começar o Quiz</button>
+    </div>
+
+    <!-- CARTÃO DO QUIZ -->
+    <div id="tela-quiz" class="quiz-box hidden">
+        <!-- Botão X adicionado aqui -->
+        <button class="btn-fechar" onclick="fecharQuiz()">✕</button>
+        
+        <div class="header">
+            <b style="color: #1d4ed8;">Conversa de Jovens</b>
+            <span style="color: #64748b;">Respondidas: <b id="total" style="color: #1d4ed8;">0</b></span>
+        </div>
+        <p id="question" style="font-weight: bold; margin-bottom: 20px;"></p>
+        <ul id="options" style="padding:0;"></ul>
+        <button id="next-btn" class="btn-prox hidden" onclick="novaPergunta()">Avançar para a Próxima →</button>
+    </div>
+
+    <script>
+        const subjects = [
+            { n: "Muitos jovens entram nas drogas em Nacala", r: "Por pressão dos amigos e falta de emprego." },
+            { n: "O consumo de soruma e bebidas caseiras perigosas", r: "Cria brigas em casa e afasta da escola." },
+            { n: "O vício em comprimidos e pacotes de álcool barato", r: "Leva o jovem a roubar a própria família." },
+            { n: "Quando um jovem em Nampula quer deixar o vício", r: "Precisa do apoio da família, sem julgamentos." }
+        ];
+
+        const fakes = [
+            "Dá mais saúde para trabalhar e jogar futebol.",
+            "Ajuda a conseguir emprego rapidamente.",
+            "Resolve todos os problemas de ansiedade da rua.",
+            "Limpa as doenças do corpo de forma natural."
+        ];
+
+        let count = 0, respostaCerta = "";
+
+        function iniciar() {
+            document.getElementById('tela-inicio').classList.add('hidden');
+            document.getElementById('tela-quiz').classList.remove('hidden');
+            novaPergunta();
+        }
+
+        // Nova função para fechar o quiz e focar no fundo
+        function fecharQuiz() {
+            document.getElementById('tela-quiz').classList.add('hidden');
+            document.getElementById('tela-inicio').classList.remove('hidden');
+        }
+
+        function novaPergunta() {
+            document.getElementById('next-btn').classList.add('hidden');
+            let item = subjects[Math.floor(Math.random() * subjects.length)];
+            respostaCerta = item.r;
+
+            let alternativas = [
+                { t: item.r, c: true },
+                { t: fakes[0], c: false },
+                { t: fakes[1], c: false },
+                { t: fakes[2], c: false }
+            ].sort(() => 0.5 - Math.random());
+
+            document.getElementById('question').innerText = `Qual é a realidade sobre esta situação?\n"${item.n}..."`;
+            
+            const lista = document.getElementById('options');
+            lista.innerHTML = '';
+
+            alternativas.forEach(alt => {
+                const li = document.createElement('li');
+                li.className = 'option';
+                li.innerText = alt.t;
+                li.onclick = function() {
+                    count++;
+                    document.getElementById('total').innerText = count;
+                    Array.from(lista.children).forEach(el => {
+                        el.classList.add('disabled');
+                        if(el.innerText === respostaCerta) el.classList.add('correct');
+                    });
+                    if(!alt.c) li.classList.add('incorrect');
+                    document.getElementById('next-btn').classList.remove('hidden');
+                };
+                lista.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
